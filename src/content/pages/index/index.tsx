@@ -112,14 +112,14 @@ export default function Index() {
     }, [results]);
 
     return (
-        <div className="flex items-center justify-center">
+        <div className="flex items-center ">
             <audio autoPlay={true} loop controls id="selectmusic"
                 className="hidden"
             >
                 <source src={selectsound} type="audio/mpeg" />
                 Seu navegador não suporta o elemento de áudio.
             </audio>
-            <div className="bg-white w-[500px] max-h-[100vh] m-auto p-3 relative rounded-xl shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)]">
+            <div className="bg-white w-[100%] md:w-[500px] h-[97vh] md:h-[100vh]  m-auto p-3 relative rounded-xl shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)]">
                 <SearchBar handleResults={(e: Result[]) =>
                     setResults(e)}
                     page={pageIdx}
@@ -165,9 +165,9 @@ export default function Index() {
                                             }}
                                         />
                                     )}
-                                    <span className="flex flex-col">
+                                    <span className="flex flex-col overflow-x-auto">
                                         {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-                                        <ul className="flex gap-[1px] items-center justify-around overflow-x-visible">
+                                        <ul className="flex gap-[1px] items-center justify-around overflow-x-auto">
                                             {resultDetails[idx]?.abilities.slice(0, 3).map((abilities, idx) => (
                                                 <li key={idx} className="bg-black rounded-full w-[80px] h-[30px] p-1 text-center text-white text-[0.9rem] whitespace-nowrap overflow-hidden text-ellipsis">
                                                     {abilities.ability.name}
@@ -193,7 +193,7 @@ export default function Index() {
                 <ErrorAlertScreen isAlerting={isAlerting} info={alertingInfo} handleAlertScreen={() => setAlerting(false)} />
                 <LoadingScreen isLoading={isLoading} />
                 {/*Botôes de navegação do Pokédex virtual */}
-                <div className=" h-[100px] mt-2 p-2 flex justify-center items-center translate-y-[-50px] shadow-[0px_-10px_10px_0px_rgba(0,_0,_0,_0.09)]">
+                <div className=" h-[50px] mt-2 p-2 flex justify-center items-center translate-y-[30px] md:translate-y-[-50px] shadow-[0px_-10px_10px_0px_rgba(0,_0,_0,_0.09)]">
                     <motion.button
                         initial={{ width: 5, opacity: 0.7 }}
                         animate={isAlerting ? { width: 5, opacity: 0.7 } : { width: 130, opacity: 1 }}

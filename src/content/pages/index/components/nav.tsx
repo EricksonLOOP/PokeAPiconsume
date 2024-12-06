@@ -71,7 +71,7 @@ export default function SearchBar({ handleResults, page, isAlerting, handleAlert
     }, [KeyboardEvent, handleResults]);
 
     return (
-        <nav className="shadow-[0px_1px_10px_2px_rgba(0,_0,_0,_0.2)] rounded-full focus:outline-0 focus:border-blue-600">
+        <nav className="sticky top-3 shadow-[0px_1px_10px_2px_rgba(0,_0,_0,_0.2)] rounded-full focus:outline-0 focus:border-blue-600">
             <audio autoPlay={true} loop controls id="bgmusic"
                 className="hidden"
             >

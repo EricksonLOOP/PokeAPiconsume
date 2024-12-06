@@ -23,16 +23,20 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
 
     // Isso aqui é utilizado para permitir que o FramerMotion realize animações de acordo com o tamnho da tela.
     useEffect(() => {
-        setActualWidth(window.innerWidth)
+        setInterval(() => {
+            setActualWidth(window.innerWidth)
+
+            console.log(window.innerWidth)
+        }, 2000)
         window.addEventListener("keydown", closeTab)
-    }, [window.innerWidth])
+    }, [])
     return (
 
         <motion.div
             initial={{ opacity: 0, display: "none", width: "1%" }}
             animate={openCloseTab ? { opacity: 1, display: "block", width: "100%" } : { opacity: 0, display: "none", width: "1%" }}
             className="absolute top-0 left-0 p-5 w-[100%] h-[100%] bg-white z-10 overflow-hidden pokemon-tab shadow-[inset_0px_4px_14px_17px_rgba(0,_0,_0,_0.1)] rounded-xl">
-            <motion.div className="w-[100%] h-[400px] flex flex-col justify-center  items-center">
+            <motion.div className="w-[90%] h-[400px] flex flex-col justify-center  items-center">
                 <motion.img
                     initial={{ translateX: -435, display: "none" }}
                     animate={openCloseTab ? { translateX: 0, display: "block" } : { translateX: -135, display: "none" }}
@@ -57,7 +61,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
                     title={pokemonDetails?.name + ` Informações`}
                     animate={{
                         opacity: openCloseTab ? 1 : 0,
-                        translateX: openCloseTab ? ActualWidth > 500 ? -155 : -200 : -300,
+                        translateX: openCloseTab ? ActualWidth < 500 ? -155 : ActualWidth < 780 ? -150 : -200 : ActualWidth < 780 ? -300 : -300,
                         rotate: openCloseTab ? 20 : 0,
                         scale: openCloseTab ? 1 : 0.8,
                     }}
@@ -103,18 +107,22 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
                     </div>
                 </motion.div>
                 <motion.div
-                    animate={openCloseTab ? { opacity: 1, translateX: 0, rotate: -20 } : { opacity: 0, display: "none", width: "1%", translateX: -300, rotate: 0 }}
-                    transition={{ delay: 0.3 }}
+                    animate={{
+                        opacity: openCloseTab ? 1 : 0,
+                        translateX: openCloseTab ? ActualWidth < 500 ? -135 : ActualWidth < 780 ? 130 : 200 : ActualWidth < 780 ? -300 : -300,
+                        rotate: openCloseTab ? -20 : 0,
+                        scale: openCloseTab ? 1 : 0.8,
+                    }}
                     style={{
                         backgroundImage: `linear-gradient(to right, white 0%, ${color} 60%)`
                     }}
-                    className=" w-[700px] translate-x-[0px] h-[500px] rotate-[-20deg] shadow-[0px_-30px_15px_2px_rgba(0,_0,_0,_0.5)] ">
+                    className=" w-[700px] translate-x-[400px] h-[500px] rotate-[-20deg] shadow-[0px_-30px_15px_2px_rgba(0,_0,_0,_0.5)] ">
 
                     <div className="rotate-[-20deg] translate-x-[155px] ">
 
                     </div>
                 </motion.div>
-            </div>
-        </motion.div>
+            </div >
+        </motion.div >
     )
 }
