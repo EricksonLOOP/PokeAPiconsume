@@ -35,7 +35,7 @@ export default function SearchBar({ handleResults, page, isAlerting, handleAlert
         }
     };
     const handleSearchFocusShortcut = (e: KeyboardEvent) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === "///") {
+        if ((e.ctrlKey || e.metaKey) && e.key === "/") {
             e.preventDefault();
 
             document.getElementById("search")?.focus()

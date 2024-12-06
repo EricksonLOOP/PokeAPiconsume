@@ -7,6 +7,11 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
     { openCloseTab: boolean, pokemonDetails: PokemonDetails | null, handleOpenClose: Function, color: string }) {
     const [image, setImages] = useState("")
     const [ActualWidth, setActualWidth] = useState(window.innerWidth)
+    const closeTab = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+            handleOpenClose()
+        }
+    }
     useEffect(() => {
         const pegarImgsBoas = async () => {
             const req = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonDetails?.id}/`)
@@ -16,6 +21,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
     }, [pokemonDetails])
     useEffect(() => {
         setActualWidth(window.innerWidth)
+        window.addEventListener("keydown", closeTab)
     }, [window.innerWidth])
     return (
 

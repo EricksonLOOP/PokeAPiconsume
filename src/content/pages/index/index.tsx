@@ -20,7 +20,7 @@ export default function Index() {
     const [pageIdx, setPageIdx] = useState(0);
     const [isAlerting, setAlerting] = useState(true)
     const [alertingInfo, setAlertingInfo] = useState("Bem-vindo(a) a nossa Wiki!")
-    const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
+    const [selectedIdx, setSelectedIdx] = useState<number>(0);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const RecuperandoDadosResult = async () => {
@@ -43,7 +43,6 @@ export default function Index() {
         } catch (error: any) {
             setAlertingInfo("Ocorreu um erro ao tentar receber os Pokémons, poderia reiniciar a página?")
             setAlerting(true)
-            console.log("Error fetching sprites or species data:", error.message);
         }
     };
 
@@ -69,27 +68,42 @@ export default function Index() {
     const handleKeyDown = (e: KeyboardEvent) => {
         if (document.activeElement === inputRef.current) return;
 
-        if (e.key === "ArrowDown") {
-            setSelectedIdx((prevIdx) => (prevIdx === null ? 0 : Math.min(prevIdx + 1, results.length - 1)));
-        } else if (e.key === "ArrowUp") {
-            setSelectedIdx((prevIdx) => (prevIdx === null ? 0 : Math.max(prevIdx - 1, 0)));
-        } else if (e.code === "Enter" && selectedIdx == null) {
-            console.log(e.key);
-        }
+        setSelectedIdx((prevIdx) => {
+            let newIdx = prevIdx;
+
+            if (e.key === "ArrowDown") {
+                newIdx = prevIdx === null ? 0 : Math.min(prevIdx + 1, results.length - 1);
+            } else if (e.key === "ArrowUp") {
+                newIdx = prevIdx === null ? 0 : Math.max(prevIdx - 1, 0);
+            }
+
+            setTimeout(() => {
+                if (e.key === "Enter" && newIdx != null) {
+
+                    setopenCloseTab(newIdx !== null);
+                }
+            }, 200);
+
+            return newIdx;
+        });
     };
 
+
+
+
+
     useEffect(() => {
-        if (results.length > 0) {
-            RecuperandoDadosResult();
-        }
         window.addEventListener("keydown", handleSearchFocusShortcut);
         window.addEventListener("keydown", handleKeyDown);
-
+        setSelectedIdx(selectedIdx !== 0 ? selectedIdx : 0)
+        setPokemonDetails(resultDetails[selectedIdx])
+        setMainColor(resultMainColor[selectedIdx])
         return () => {
             window.removeEventListener("keydown", handleSearchFocusShortcut);
             window.removeEventListener("keydown", handleKeyDown);
         };
-    }, [results]);
+
+    }, [resultDetails, selectedIdx]);
 
     useEffect(() => {
         if (results.length > 0) {
@@ -119,14 +133,17 @@ export default function Index() {
                         {results.map((pokemon: Result, idx) => (
                             <motion.li
                                 key={idx}
-                                className={`min-h-[70px] shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)] text-[1.3rem] font-bold list-none p-2 rounded-md cursor-pointer hover:bg-slate-300 transition-all duration-300 ease-in-out ${selectedIdx === idx ? "bg-blue-200" : ""
+                                className={`
+                                    min-h-[70px] shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)] text-[1.3rem] 
+                                    font-bold list-none p-2 rounded-md cursor-pointer hover:bg-slate-300 
+                                    transition-all duration-300 ease-in-out ${selectedIdx === idx ? "bg-blue-200 sticky top-2 bottom-2 z-10" : ""
                                     }`}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.5 }}
                                 title={pokemon.name}
-                                onClick={() => console.log(`Selecionado Pokémon: ${pokemon.name}`)}
+                                onClick={() => setSelectedIdx(idx)}
                             >
                                 <div className="flex items-center space-x-4" onClick={() => {
                                     playAudio();
