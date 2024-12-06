@@ -137,6 +137,7 @@ export default function Index() {
                                 className={`
                                     min-h-[70px] shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)] text-[1.3rem] 
                                     font-bold list-none p-2 rounded-md cursor-pointer hover:bg-slate-300 
+                                    overflow-hidden
                                     transition-all duration-300 ease-in-out ${selectedIdx === idx ? "bg-blue-200 sticky top-2 bottom-2 z-10" : ""
                                     }`}
                                 initial={{ opacity: 0 }}
@@ -166,9 +167,9 @@ export default function Index() {
                                     )}
                                     <span className="flex flex-col">
                                         {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-                                        <ul className="flex gap-1 items-center justify-around">
+                                        <ul className="flex gap-[1px] items-center justify-around">
                                             {resultDetails[idx]?.abilities.slice(0, 3).map((abilities, idx) => (
-                                                <li key={idx} className="bg-black rounded-full min-w-[80px] h-[30px] p-1 text-center text-white text-[0.9rem]">
+                                                <li key={idx} className="bg-black rounded-full w-[80px] h-[30px] p-1 text-center text-white text-[0.9rem] whitespace-nowrap overflow-hidden text-ellipsis">
                                                     {abilities.ability.name}
                                                 </li>
                                             ))}
