@@ -1,7 +1,13 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import bgsound from "../../../global-components/background-audio.mp3"
-export default function SearchBar({ handleResults, page }: { handleResults: Function, page: number }) {
+import { motion } from "framer-motion";
+export default function SearchBar({ handleResults, page, isAlerting, handleAlertScreen, handleAlertinfo }:
+    {
+        handleResults: Function, page: number,
+        isAlerting: boolean, handleAlertScreen: Function,
+        handleAlertinfo: Function
+    }) {
     const [searchQuery, setSearchQuery] = useState("");
     const [allResults, setAllResults] = useState<any[]>([]);
 
@@ -11,6 +17,8 @@ export default function SearchBar({ handleResults, page }: { handleResults: Func
             setAllResults(req.data.results);
             handleResults(req.data.results);
         } catch (error: any) {
+            handleAlertinfo("Uau! Parece que tivemos vário resultados. O que acha de reiniciar a página?" + error)
+            handleAlertScreen(true)
             console.log(error.message);
         }
     };
@@ -63,7 +71,9 @@ export default function SearchBar({ handleResults, page }: { handleResults: Func
                 Seu navegador não suporta o elemento de áudio.
             </audio>
             <label htmlFor="search">
-                <input
+                <motion.input
+                    initial={{ width: 5, opacity: 0.7 }}
+                    animate={isAlerting ? { width: 0, opacity: 0.7 } : { width: "100%", opacity: 1 }}
                     type="text"
                     placeholder="Search Pokémon..."
                     id="search"

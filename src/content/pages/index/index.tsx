@@ -7,6 +7,7 @@ import PokeBola from "../../imgs/pokebola.webp";
 import { motion } from "framer-motion";
 import ScreenPokemon from "./components/show-pokemon-screen";
 import selectsound from "../../global-components/select-audio.mp3"
+import ErrorAlertScreen from "./components/error-alert-screen";
 export default function Index() {
     const [results, setResults] = useState<Result[]>([]);
     const [resultSprites, setResultSprites] = useState<string[]>([]);
@@ -15,7 +16,10 @@ export default function Index() {
     const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails | null>(null);
     const [isLoading, setIsloading] = useState(true);
     const [openCloseTab, setopenCloseTab] = useState(false)
+    const [mainColor, setMainColor] = useState("")
     const [pageIdx, setPageIdx] = useState(0);
+    const [isAlerting, setAlerting] = useState(true)
+    const [alertingInfo, setAlertingInfo] = useState("Bem-vindo(a) a nossa Wiki!")
     const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -37,6 +41,8 @@ export default function Index() {
             setResultMainColor(colors);
             setIsloading(false);
         } catch (error: any) {
+            setAlertingInfo("Ocorreu um erro ao tentar receber os Pokémons, poderia reiniciar a página?")
+            setAlerting(true)
             console.log("Error fetching sprites or species data:", error.message);
         }
     };
@@ -52,7 +58,8 @@ export default function Index() {
         const audioElement = document.getElementById("selectmusic") as HTMLAudioElement;
         if (audioElement) {
             audioElement.play().catch(error => {
-                console.log(error);
+                setAlertingInfo("Poxa! A música não pode ser executada, tente reiniciar a página.. ; ) Erro: " + error)
+                setAlerting(true)
             });
             setTimeout(() => audioElement.pause(), 1000)
         }
@@ -99,24 +106,33 @@ export default function Index() {
                 Seu navegador não suporta o elemento de áudio.
             </audio>
             <div className="bg-white w-[500px] max-h-[100vh] m-auto p-3 relative rounded-xl shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)]">
-                <SearchBar handleResults={(e: Result[]) => setResults(e)} page={pageIdx} />
+                <SearchBar handleResults={(e: Result[]) =>
+                    setResults(e)}
+                    page={pageIdx}
+                    isAlerting={isAlerting}
+                    handleAlertScreen={() => setAlerting(true)}
+                    handleAlertinfo={(e: string) => setAlertingInfo(e)}
+
+                />
                 <div id="responses-div" className="p-2 bg-white mt-4 h-[450px] overflow-y-auto ">
                     <ul className="flex flex-col gap-4">
                         {results.map((pokemon: Result, idx) => (
                             <motion.li
                                 key={idx}
-                                className={`min-h-[70px] text-[1.3rem] font-bold list-none p-2 rounded-md cursor-pointer hover:bg-slate-300 transition-all duration-300 ease-in-out ${selectedIdx === idx ? "bg-blue-200" : ""
+                                className={`min-h-[70px] shadow-[15px_6px_15px_0px_rgba(0,_0,_0,_0.1)] text-[1.3rem] font-bold list-none p-2 rounded-md cursor-pointer hover:bg-slate-300 transition-all duration-300 ease-in-out ${selectedIdx === idx ? "bg-blue-200" : ""
                                     }`}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.5 }}
+                                title={pokemon.name}
                                 onClick={() => console.log(`Selecionado Pokémon: ${pokemon.name}`)}
                             >
                                 <div className="flex items-center space-x-4" onClick={() => {
                                     playAudio();
                                     setPokemonDetails(resultDetails[idx]);
                                     setopenCloseTab(true);
+                                    setMainColor(resultMainColor[idx])
 
                                 }}>
                                     {resultSprites[idx] && (
@@ -149,28 +165,40 @@ export default function Index() {
                     openCloseTab={openCloseTab}
                     pokemonDetails={pokemonDetails}
                     handleOpenClose={() => setopenCloseTab(false)}
+                    color={mainColor}
                 />
+                <ErrorAlertScreen isAlerting={isAlerting} info={alertingInfo} handleAlertScreen={() => setAlerting(false)} />
                 <LoadingScreen isLoading={isLoading} />
                 <div className=" h-[100px] mt-2 p-2 flex justify-center items-center translate-y-[-50px] shadow-[0px_-10px_10px_0px_rgba(0,_0,_0,_0.09)]">
-                    <button
+                    <motion.button
+                        initial={{ width: 5, opacity: 0.7 }}
+                        animate={isAlerting ? { width: 5, opacity: 0.7 } : { width: 130, opacity: 1 }}
                         type="button"
+                        title="voltar uma página"
                         className="p-2 bg-yellow-600 w-[130px] font-bold text-white rounded-l-full translate-x-[5px] hover:bg-yellow-700 transition duration-500 ease-in-out"
                         onClick={() => pageIdx === 0 ? {} : setPageIdx(pageIdx - 1)}
                     >
                         Voltar
-                    </button>
-                    <button className="bg-yellow-600 p-4 rounded-[100%]"
+                    </motion.button>
+                    <motion.button
+                        initial={{ opacity: 0.7 }}
+                        title="Voltar para o inicio"
+                        animate={isAlerting ? { opacity: 0.7 } : { rotate: 360, opacity: 1 }}
+                        className="bg-yellow-600 p-4 rounded-[100%]"
                         onClick={() => setPageIdx(0)}
                     >
-                        <img src={PokeBola} alt="" className="w-[70px]" />
-                    </button>
-                    <button
+                        <img src={PokeBola} alt="Pokebola Home" className="w-[70px]" />
+                    </motion.button>
+                    <motion.button
+                        initial={{ width: 5, opacity: 0.7 }}
+                        title="Avançar uma página"
+                        animate={isAlerting ? { width: 5, opacity: 0.7 } : { width: 130, opacity: 1 }}
                         type="button"
                         className="p-2 bg-yellow-600 w-[130px] font-bold text-white rounded-e-full translate-x-[-5px] hover:bg-yellow-700 transition duration-500 ease-in-out"
                         onClick={() => setPageIdx(pageIdx + 1)}
                     >
                         Avançar
-                    </button>
+                    </motion.button>
                 </div>
 
             </div>
