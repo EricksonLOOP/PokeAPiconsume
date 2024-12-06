@@ -12,6 +12,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
             handleOpenClose()
         }
     }
+    //As outras imagens são muito pequenas, necessitamos de algo melhor as vezes
     useEffect(() => {
         const pegarImgsBoas = async () => {
             const req = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonDetails?.id}/`)
@@ -19,6 +20,8 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
         }
         pegarImgsBoas()
     }, [pokemonDetails])
+
+    // Isso aqui é utilizado para permitir que o FramerMotion realize animações de acordo com o tamnho da tela.
     useEffect(() => {
         setActualWidth(window.innerWidth)
         window.addEventListener("keydown", closeTab)

@@ -2,6 +2,8 @@
 import { motion } from "framer-motion"
 import Pikachugif from "../imgs/pikachu-loading.gif"
 import { useState } from "react";
+
+//  10 curiosiadades sobre pokémons
 const pokemonCuriosities = [
     "Você sabia que o Pikachu foi inspirado em um animal real? Ele é baseado no pika, um roedor pequeno que vive nas montanhas da Ásia e América do Norte!",
     "Atualmente, existem mais de 1000 espécies de Pokémon. A franquia começou com 151, mas o número cresceu muito desde 1996!",
@@ -17,16 +19,17 @@ const pokemonCuriosities = [
 
 export default function LoadingScreen({ isLoading }: { isLoading: boolean }) {
     const [info, setInfo] = useState(0)
+    //1s não é muita coisa, mas eu aumentava e não mudou nada, deixa assim...
     setTimeout(() => {
         let num = Math.floor(Math.random() * 10)
         setInfo(num)
-    }, 12000)
+    }, 1000)
     return (
         <motion.div
             initial={{ display: "none", opacity: 0 }}
             animate={isLoading ? { display: "block", opacity: 1 } : { display: "none", opacity: 0 }}
             className="bg-white absolute z-10 h-[100%] top-0 left-0 w-[100%]">
-            <img src={Pikachugif} />
+            <img src={Pikachugif} alt="Pikachu guardando cartas na bolsinha" />
             <p className="text-center font-extrabold bg-white translate-y-[-50px] ">
                 Carregando..</p>
             <p className="text-center font-bold bg-white translate-y-[-50px] w-[270px] m-auto">

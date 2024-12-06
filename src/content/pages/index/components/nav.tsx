@@ -23,17 +23,22 @@ export default function SearchBar({ handleResults, page, isAlerting, handleAlert
         }
     };
 
+    // Aqui é onde realiza a pesquisa dos pokémons, cuidado não achar um dinossauro.
     const handleSearch = (query: string) => {
         setSearchQuery(query);
         if (query === "") {
             handleResults(allResults);
         } else {
+            //Se digitada um query, filtramos para achar.
             const filteredResults = allResults.filter((pokemon) =>
                 pokemon.name.toLowerCase().includes(query.toLowerCase())
             );
             handleResults(filteredResults);
         }
     };
+
+    // Essa função permite que acesse o input de pequisa através de atalhos
+    // - Mainha sempre ensinou que atalho não era a melhor opção, quem diria né?!
     const handleSearchFocusShortcut = (e: KeyboardEvent) => {
         if ((e.ctrlKey || e.metaKey) && e.key === "/") {
             e.preventDefault();
@@ -41,10 +46,13 @@ export default function SearchBar({ handleResults, page, isAlerting, handleAlert
             document.getElementById("search")?.focus()
         }
     }
-
+    // Quando uma página é mudada relizadmos uma nova recuperação de dados para atulizar nossa lista
     useEffect(() => {
         RescuperarResultados();
     }, [page]);
+
+    // isso aqui ja é mais interessante, sem isso a música legal não toca.
+    // Para tocar precisa da interação do úsuario com a tela, então vamos te dar boas-vindas quando chegar.
     useEffect(() => {
         window.addEventListener("keydown", handleSearchFocusShortcut);
         const playAudio = () => {

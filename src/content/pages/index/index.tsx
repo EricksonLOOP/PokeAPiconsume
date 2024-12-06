@@ -9,22 +9,28 @@ import ScreenPokemon from "./components/show-pokemon-screen";
 import selectsound from "../../global-components/select-audio.mp3"
 import ErrorAlertScreen from "./components/error-alert-screen";
 export default function Index() {
+    //Consts do primeiro Resultado:
     const [results, setResults] = useState<Result[]>([]);
     const [resultSprites, setResultSprites] = useState<string[]>([]);
     const [resultMainColor, setResultMainColor] = useState<string[]>([]);
     const [resultDetails, setResultDetails] = useState<PokemonDetails[]>([]);
+    // Detalhes para o ShowPokémon
     const [pokemonDetails, setPokemonDetails] = useState<PokemonDetails | null>(null);
+    const [mainColor, setMainColor] = useState("")
+    //Consts que permitem interação com o estado da página, navegação, atualização, fechar, etc..
     const [isLoading, setIsloading] = useState(true);
     const [openCloseTab, setopenCloseTab] = useState(false)
-    const [mainColor, setMainColor] = useState("")
     const [pageIdx, setPageIdx] = useState(0);
     const [isAlerting, setAlerting] = useState(true)
     const [alertingInfo, setAlertingInfo] = useState("Bem-vindo(a) a nossa Wiki!")
     const [selectedIdx, setSelectedIdx] = useState<number>(0);
-    const inputRef = useRef<HTMLInputElement>(null);
 
+
+
+    //Chamando EndPoint principal para receber os pokemons dá pagina
     const RecuperandoDadosResult = async () => {
         try {
+            //Inicia tela de carregamendo
             setIsloading(true);
             const sprites: string[] = [];
             const colors: string[] = [];
@@ -36,23 +42,20 @@ export default function Index() {
                 const speciesReq = await axios.get(req.data.species.url);
                 colors.push(speciesReq.data.color.name);
             }
+            // Setando o valor de cada lista nos UseState desejados
             setResultDetails(details);
             setResultSprites(sprites);
             setResultMainColor(colors);
             setIsloading(false);
         } catch (error: any) {
+            //Ativando o alert caso tenha algum erro aos procedimentos
             setAlertingInfo("Ocorreu um erro ao tentar receber os Pokémons, poderia reiniciar a página?")
             setAlerting(true)
         }
     };
 
-    const handleSearchFocusShortcut = (e: KeyboardEvent) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === "q") {
-            e.preventDefault();
-            inputRef.current?.focus();
-
-        }
-    };
+    // Para deixar o menu mais legal, ou vai dizer que não gostou da músiquinha?
+    // Isso aqui toca um som de select quando clica para ver um Pokémon "tiririinn".
     const playAudio = () => {
         const audioElement = document.getElementById("selectmusic") as HTMLAudioElement;
         if (audioElement) {
@@ -64,9 +67,9 @@ export default function Index() {
         }
     };
 
-
+    // Executada quando há algum evento do teclado, permitindo que use as teclas Down e Up para navegar entre
+    // Os Cards ou que você acesse determinado pokémon com o enter, através de seu index -\(- -)/-
     const handleKeyDown = (e: KeyboardEvent) => {
-        if (document.activeElement === inputRef.current) return;
 
         setSelectedIdx((prevIdx) => {
             let newIdx = prevIdx;
@@ -76,7 +79,7 @@ export default function Index() {
             } else if (e.key === "ArrowUp") {
                 newIdx = prevIdx === null ? 0 : Math.max(prevIdx - 1, 0);
             }
-
+            // Os UseStates agem de forma assíncrona, só espere um pouco e relaxe 💤
             setTimeout(() => {
                 if (e.key === "Enter" && newIdx != null) {
 
@@ -88,23 +91,20 @@ export default function Index() {
         });
     };
 
-
-
-
-
+    // Executado sempre que o selectedIdx muda, pois precisamos setar o novo index para - 
+    // acessar o idx em foco. - Pelo menos ele se torna maior, diferente de nós..
     useEffect(() => {
-        window.addEventListener("keydown", handleSearchFocusShortcut);
         window.addEventListener("keydown", handleKeyDown);
         setSelectedIdx(selectedIdx !== 0 ? selectedIdx : 0)
         setPokemonDetails(resultDetails[selectedIdx])
         setMainColor(resultMainColor[selectedIdx])
         return () => {
-            window.removeEventListener("keydown", handleSearchFocusShortcut);
             window.removeEventListener("keydown", handleKeyDown);
         };
 
     }, [resultDetails, selectedIdx]);
 
+    // Recupera os dados quando o resultado é mudado
     useEffect(() => {
         if (results.length > 0) {
             RecuperandoDadosResult();
@@ -130,6 +130,7 @@ export default function Index() {
                 />
                 <div id="responses-div" className="p-2 bg-white mt-4 h-[450px] overflow-y-auto ">
                     <ul className="flex flex-col gap-4">
+                        {/*Isso aqui lista todos os Pokémons de uma página X ou Y*/}
                         {results.map((pokemon: Result, idx) => (
                             <motion.li
                                 key={idx}
@@ -178,6 +179,10 @@ export default function Index() {
                         ))}
                     </ul>
                 </div>
+                {/* 
+                Estas telas Screen, Error, Loading só são ativadas quando setadas como TRUE.
+                - Desta vez a verdade tem que ser explicita, ao invés do que ela me contava.
+                */}
                 <ScreenPokemon
                     openCloseTab={openCloseTab}
                     pokemonDetails={pokemonDetails}
@@ -186,6 +191,7 @@ export default function Index() {
                 />
                 <ErrorAlertScreen isAlerting={isAlerting} info={alertingInfo} handleAlertScreen={() => setAlerting(false)} />
                 <LoadingScreen isLoading={isLoading} />
+                {/*Botôes de navegação do Pokédex virtual */}
                 <div className=" h-[100px] mt-2 p-2 flex justify-center items-center translate-y-[-50px] shadow-[0px_-10px_10px_0px_rgba(0,_0,_0,_0.09)]">
                     <motion.button
                         initial={{ width: 5, opacity: 0.7 }}
