@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pokemon {
+    filter: drop-shadow(32px 15px 20px #000000);
+}
+
+body {
+    background-image: url("./content/imgs/pokemon-unite-pokemon-unite-crustle.gif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+    overflow: unset;
+}
+
+.pokemon-tab {
+    background-image: url("./content/imgs/bg-pokemon.jpeg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+}
+
+/* Estilos principais para a barra de rolagem */
+::-webkit-scrollbar {
+    width: 12px;
+    /* Largura da barra de rolagem */
+    height: 12px;
+    /* Altura da barra horizontal */
+}
+
+/* Estilo do trilho da barra de rolagem */
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    /* Cor do fundo do trilho */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+}
+
+/* Estilo do botão de rolagem */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    /* Gradiente futurista */
+    border-radius: 10px;
+    /* Bordas arredondadas */
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    /* Sombra suave */
+}
+
+/* Estilo quando o botão de rolagem está em foco */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #ff00c6, #ff0072);
+    /* Alteração de cor ao passar o mouse */
+    box-shadow: 0 0 15px rgba(255, 0, 255, 0.7);
+    /* Intensificando a sombra */
+}
+
+/* Para a barra horizontal */
+::-webkit-scrollbar-horizontal {
+    height: 12px;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    background: linear-gradient(45deg, #00c6ff, #0072ff);
+    /* Gradiente horizontal */
+}
+
+/* Opção para colocar um brilho */
+::-webkit-scrollbar-thumb:active {
+    background: #00ffcc;
+    /* Cor de foco quando a barra de rolagem está sendo clicada */
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.7);
+}
