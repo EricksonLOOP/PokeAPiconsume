@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "./components/nav";
 import axios from "axios";
 import { PokemonDetails, Result } from "../../interfaces/pokemon";

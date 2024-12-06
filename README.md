@@ -1,5 +1,8 @@
 # Documentação ProjetoPokemon
  O ProjetoPokemon foi criado ao viés de realizar o teste técnico da PoliDigital, onde testa sua capacidade com a interação de código em React.
+ 
+  --- Acesse aqui!!!
+ **Acesse a página em: https://poke-a-piconsume.vercel.app**
 
  ## Tecnologias
   As tecnologias foram pensadas visando proporcionar uma melhor experiência ao usuário, sendo assim, um projeto de pokémon, foi pensado trazer algo parecido com um jogo. As tecnologias escolhidas foram:
@@ -13,8 +16,9 @@
  O design foi feito a partir do design de cartas do jogo Pokémon Unite, e com o viés de lembram uma Pokedex
  - ### Design Arquitetônico
  -- **Modularidade**: O código foi separado em componentes e pastas, cada uma com responsabilidade clara, para garantir fácil manutenção e escalabilidade.
- --**TypeScript**: Usado para garantir a segurança de tipos e evitar erros de tempo de execução.
- -- **Componentes Reutilizáveis**: Componentes globais, como telas de erro e de carregamento, são armazenados em --**global-components** para serem utilizados em diversas partes do projeto.
+ -- **TypeScript**: Usado para garantir a segurança de tipos e evitar erros de tempo de execução.
+ -- **Componentes Reutilizáveis**: Componentes globais, como telas de erro e de carregamento, são armazenados em 
+ -- **global-components** para serem utilizados em diversas partes do projeto.
 
 ## Arquitetura
  Para arquitetura, a escolhida foi arquitetura modular, pois se trata de um projeto que pode crescer e isso acaba viabilizando a possibilidade de manutenção de código, permitindo que o ajuste de cada parte do código não acabe atingindo outras tercerizadas. As tecnoligias escolhidas ao objetivo desta arquitetura, tamanho do projeto, tempo de entrega foram:
