@@ -20,10 +20,10 @@ const pokemonCuriosities = [
 export default function LoadingScreen({ isLoading }: { isLoading: boolean }) {
     const [info, setInfo] = useState(0)
     //1s não é muita coisa, mas eu aumentava e não mudou nada, deixa assim...
-    setTimeout(() => {
-        let num = Math.floor(Math.random() * 10)
+    setInterval(() => {
+        const num = Math.floor(Math.random() * 10)
         setInfo(num)
-    }, 1000)
+    }, 3000)
     return (
         <motion.div
             initial={{ display: "none", opacity: 0 }}

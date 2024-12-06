@@ -25,9 +25,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
     useEffect(() => {
         setInterval(() => {
             setActualWidth(window.innerWidth)
-
-            console.log(window.innerWidth)
-        }, 2000)
+        }, 100)
         window.addEventListener("keydown", closeTab)
     }, [])
     return (
@@ -67,7 +65,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
                     }}
                     transition={{ delay: 0.3 }}
                     className={`bg-gradient-to-tr to-gray-600 from-slate-950 w-[700px] translate-x-[-355px] md:translate-x-[-155px] h-[500px] rotate-[20deg] shadow-[0px_-30px_15px_2px_rgba(0,_0,_0,_0.5)] absolute z-10`}>
-                    <div className="rotate-[-20deg] translate-x-[145px]  translate-y-[-45px] ">
+                    <div className="rotate-[-20deg] translate-x-[90px] md:translate-x-[145px] translate-y-[-45px] ">
                         <h2
                             title={`Nome Pokemon: ${pokemonDetails?.name}`}
                             className="font-bold text-[3rem] mt-5 text-white flex items-center justify-start gap-2 ">
@@ -109,7 +107,7 @@ export default function ScreenPokemon({ openCloseTab, pokemonDetails, handleOpen
                 <motion.div
                     animate={{
                         opacity: openCloseTab ? 1 : 0,
-                        translateX: openCloseTab ? ActualWidth < 500 ? -135 : ActualWidth < 780 ? 130 : 200 : ActualWidth < 780 ? -300 : -300,
+                        translateX: openCloseTab ? ActualWidth < 500 ? -135 : ActualWidth < 780 ? 150 : 200 : ActualWidth < 780 ? -300 : -300,
                         rotate: openCloseTab ? -20 : 0,
                         scale: openCloseTab ? 1 : 0.8,
                     }}
