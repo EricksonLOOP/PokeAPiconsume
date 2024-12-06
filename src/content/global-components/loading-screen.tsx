@@ -29,7 +29,7 @@ export default function LoadingScreen({ isLoading }: { isLoading: boolean }) {
             <img src={Pikachugif} />
             <p className="text-center font-extrabold bg-white translate-y-[-50px] ">
                 Carregando..</p>
-            <p className="text-center font-bold bg-white translate-y-[-50px] w-[180px]">
+            <p className="text-center font-bold bg-white translate-y-[-50px] w-[230px] m-auto">
                 {pokemonCuriosities[info]}</p>
         </motion.div>
     )
